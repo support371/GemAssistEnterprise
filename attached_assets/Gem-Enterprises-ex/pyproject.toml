@@ -4,5 +4,5 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.12"
 dependencies = [
-    "pip==25.3",
+    "pip==26.1.2",
 ]
