@@ -126,3 +126,43 @@ def test_security_headers_are_applied_to_html_routes():
     assert response.headers["X-Content-Type-Options"] == "nosniff"
     assert response.headers["X-Frame-Options"] == "SAMEORIGIN"
     assert "Content-Security-Policy" in response.headers
+
+
+def test_global_layout_does_not_publish_unverified_partner_roster():
+    client = app_module.app.test_client()
+
+    response = client.get("/")
+    page = response.get_data(as_text=True)
+
+    assert response.status_code == 200
+    for unverified_name in (
+        "Amazon Web Services (AWS)",
+        "Microsoft Azure",
+        "Deloitte",
+        "PwC (PricewaterhouseCoopers)",
+        "IBM Security",
+    ):
+        assert unverified_name not in page
+
+
+def test_ecosystem_page_explains_controlled_handoff_without_vendor_endorsements():
+    client = app_module.app.test_client()
+
+    response = client.get("/partners-trustees")
+    page = response.get_data(as_text=True)
+
+    assert response.status_code == 200
+    assert "Ecosystem &amp;" in page
+    assert "Partner names are published only after verification" in page
+    assert app_module.CANONICAL_GET_STARTED_URL in page
+    assert app_module.CANONICAL_CLIENT_LOGIN_URL in page
+    assert app_module.CANONICAL_TRUST_CENTER_URL in page
+    for unverified_name in (
+        "Amazon Web Services",
+        "Microsoft Azure",
+        "Google Cloud Platform",
+        "Deloitte Digital",
+        "PwC Advisory",
+        "IBM Security",
+    ):
+        assert unverified_name not in page

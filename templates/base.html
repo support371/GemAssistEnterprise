@@ -137,13 +137,13 @@
               <div class="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover/community:opacity-100 group-hover/community:visible transition-all duration-300 z-50">
                 <div class="bg-[#030712] border border-white/10 rounded-2xl p-5 w-56 shadow-2xl backdrop-blur-xl">
                   <div class="space-y-1">
-                    <a href="{{ url_for('about_page') }}#testimonials" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-all group/item">
-                      <i data-lucide="message-square-quote" class="h-4 w-4 text-gemLightBlue/60 group-hover/item:text-gemLightBlue transition-colors"></i>
-                      <span class="text-xs font-bold text-gray-400 group-hover/item:text-white transition-colors">Testimonials</span>
+                    <a href="{{ canonical_trust_center_url }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-all group/item">
+                      <i data-lucide="shield-check" class="h-4 w-4 text-gemLightBlue/60 group-hover/item:text-gemLightBlue transition-colors"></i>
+                      <span class="text-xs font-bold text-gray-400 group-hover/item:text-white transition-colors">Trust Center</span>
                     </a>
                     <a href="{{ url_for('partners_trustees') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-all group/item">
-                      <i data-lucide="handshake" class="h-4 w-4 text-gemLightBlue/60 group-hover/item:text-gemLightBlue transition-colors"></i>
-                      <span class="text-xs font-bold text-gray-400 group-hover/item:text-white transition-colors">Partners & Trustees</span>
+                      <i data-lucide="network" class="h-4 w-4 text-gemLightBlue/60 group-hover/item:text-gemLightBlue transition-colors"></i>
+                      <span class="text-xs font-bold text-gray-400 group-hover/item:text-white transition-colors">Ecosystem & Alliances</span>
                     </a>
                     <a href="{{ url_for('teams_page') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-all group/item">
                       <i data-lucide="users" class="h-4 w-4 text-gemLightBlue/60 group-hover/item:text-gemLightBlue transition-colors"></i>
@@ -212,8 +212,8 @@
               Community <i data-lucide="chevron-down" class="h-6 w-6"></i>
             </button>
             <div id="mobile-community-list" class="hidden flex flex-col items-center space-y-3 mt-5 bg-white/5 rounded-3xl p-5">
-              <a href="{{ url_for('about_page') }}#testimonials" class="mobile-nav-link text-sm font-black uppercase tracking-widest text-white/50 hover:text-gemLightBlue">Testimonials</a>
-              <a href="{{ url_for('partners_trustees') }}" class="mobile-nav-link text-sm font-black uppercase tracking-widest text-white/50 hover:text-gemLightBlue">Partners & Trustees</a>
+              <a href="{{ canonical_trust_center_url }}" class="mobile-nav-link text-sm font-black uppercase tracking-widest text-white/50 hover:text-gemLightBlue">Trust Center</a>
+              <a href="{{ url_for('partners_trustees') }}" class="mobile-nav-link text-sm font-black uppercase tracking-widest text-white/50 hover:text-gemLightBlue">Ecosystem & Alliances</a>
               <a href="{{ url_for('teams_page') }}" class="mobile-nav-link text-sm font-black uppercase tracking-widest text-white/50 hover:text-gemLightBlue">Our Teams</a>
               <a href="{{ url_for('vip_board') }}" class="mobile-nav-link text-sm font-black uppercase tracking-widest text-white/50 hover:text-yellow-400">Executive Board (VIP)</a>
               <a href="{{ url_for('about_page') }}" class="mobile-nav-link text-sm font-black uppercase tracking-widest text-white/50 hover:text-gemLightBlue">Leadership & Board</a>
@@ -477,143 +477,6 @@
       });
     </script>
     
-    <!-- Partners Slider Script -->
-    <script>
-    // Trusted Partners and Business Allies Data
-    const trustedPartners = [
-        {
-            name: "Amazon Web Services (AWS)",
-            logo: "https://logos-world.net/wp-content/uploads/2021/04/Amazon-AWS-Logo.png",
-            category: "Cloud Infrastructure Partner",
-            description: "Enterprise cloud computing & security solutions"
-        },
-        {
-            name: "Microsoft Azure",
-            logo: "https://logos-world.net/wp-content/uploads/2020/04/Microsoft-Azure-Logo.png",
-            category: "Technology Partner",
-            description: "Cloud services & enterprise solutions"
-        },
-        {
-            name: "Google Cloud",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Google_Cloud_logo.svg",
-            category: "Data & Analytics Partner",
-            description: "AI/ML and data analytics services"
-        },
-        {
-            name: "Deloitte",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Deloitte.svg",
-            category: "Strategic Trustee",
-            description: "Advisory & risk management services"
-        },
-        {
-            name: "PwC (PricewaterhouseCoopers)",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/5/5e/PwC_logo.svg",
-            category: "Compliance Trustee",
-            description: "Audit, compliance & assurance services"
-        },
-        {
-            name: "IBM Security",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
-            category: "Cybersecurity Partner",
-            description: "Enterprise security & threat intelligence"
-        },
-        {
-            name: "Cisco Systems",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg",
-            category: "Network Security Partner",
-            description: "Network infrastructure & security solutions"
-        },
-        {
-            name: "Oracle",
-            logo: "https://logos-world.net/wp-content/uploads/2020/09/Oracle-Logo.png",
-            category: "Database Partner",
-            description: "Enterprise database & cloud solutions"
-        },
-        {
-            name: "Salesforce",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
-            category: "CRM Partner",
-            description: "Customer relationship management solutions"
-        },
-        {
-            name: "KPMG",
-            logo: "https://logos-world.net/wp-content/uploads/2020/04/KPMG-Logo.png",
-            category: "Financial Trustee",
-            description: "Financial audit & advisory services"
-        },
-        {
-            name: "Accenture",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/c/cd/Accenture.svg",
-            category: "Consulting Partner",
-            description: "Digital transformation & consulting"
-        },
-        {
-            name: "VMware",
-            logo: "https://logos-world.net/wp-content/uploads/2021/02/VMware-Logo.png",
-            category: "Virtualization Partner",
-            description: "Cloud infrastructure & virtualization"
-        }
-    ];
-
-    // Initialize Partners Slider
-    document.addEventListener('DOMContentLoaded', function() {
-        const sliderContainer = document.getElementById('partnersSlider');
-        
-        if (sliderContainer) {
-            // Create two sets for seamless infinite loop
-            const createPartnerCards = () => {
-                return trustedPartners.map(partner => `
-                    <div class="partner-card">
-                        <div class="partner-logo-container">
-                            <img src="${partner.logo}" alt="${partner.name}" class="partner-logo" 
-                                 onerror="this.src='https://via.placeholder.com/150x60/667eea/ffffff?text=${encodeURIComponent(partner.name)}'">
-                        </div>
-                        <div class="partner-info">
-                            <div class="partner-category">${partner.category}</div>
-                            <div class="partner-name">${partner.name}</div>
-                            <div class="partner-description">${partner.description}</div>
-                        </div>
-                    </div>
-                `).join('');
-            };
-            
-            // Add two sets for seamless loop
-            sliderContainer.innerHTML = createPartnerCards() + createPartnerCards();
-            
-            // Start auto-sliding animation
-            let scrollPosition = 0;
-            const scrollSpeed = 0.5; // pixels per frame
-            
-            function autoSlide() {
-                scrollPosition += scrollSpeed;
-                sliderContainer.style.transform = `translateX(-${scrollPosition}px)`;
-                
-                // Reset when first set is completely scrolled
-                const cardWidth = 320; // width + margin
-                const resetPoint = trustedPartners.length * cardWidth;
-                
-                if (scrollPosition >= resetPoint) {
-                    scrollPosition = 0;
-                }
-                
-                requestAnimationFrame(autoSlide);
-            }
-            
-            // Pause on hover
-            sliderContainer.addEventListener('mouseenter', function() {
-                sliderContainer.style.animationPlayState = 'paused';
-            });
-            
-            sliderContainer.addEventListener('mouseleave', function() {
-                sliderContainer.style.animationPlayState = 'running';
-            });
-            
-            // Start animation
-            autoSlide();
-        }
-    });
-    </script>
-
     <!-- Custom JS (deferred for faster page load) -->
     <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script defer src="{{ url_for('static', filename='js/notion-cms.js') }}"></script>

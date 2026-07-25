@@ -1,219 +1,121 @@
 {% extends "base.html" %}
-{% from "partials/profile_card.html" import profile_card %}
 
-{% block title %}Partners & Trustees - GEM Assist Enterprise{% endblock %}
+{% block title %}Ecosystem & Alliances - GEM Assist Enterprise{% endblock %}
 
 {% block content %}
-<!-- Hero -->
-<section class="relative min-h-[44vh] pt-40 pb-20 overflow-hidden">
+<section class="relative min-h-[48vh] pt-40 pb-20 overflow-hidden">
   <div class="absolute inset-0 -z-10" style="background-image:radial-gradient(circle at 1px 1px,rgb(71,85,105) 1px,transparent 0);background-size:40px 40px;opacity:0.12"></div>
   <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] -z-10"></div>
   <div class="max-w-screen-xl mx-auto px-6 text-center">
-    <p class="text-[10px] font-black uppercase text-blue-400 tracking-[0.35em] mb-4">TRUST NETWORK & ALLIANCES</p>
+    <p class="text-[10px] font-black uppercase text-blue-400 tracking-[0.35em] mb-4">CONTROLLED ENTERPRISE ECOSYSTEM</p>
     <h1 class="text-5xl lg:text-7xl font-black text-white mb-6 leading-[0.9] tracking-tighter">
-      Partners &amp; <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Trustees</span>
+      Ecosystem &amp; <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Alliances</span>
     </h1>
     <p class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
-      Strategic partnerships and trusted relationships powering GEM enterprise security and Alliance Trust Realty services.
+      GEM Enterprise coordinates discovery, qualification, account access, and approved service relationships through clearly separated platforms.
     </p>
   </div>
 </section>
 
-<!-- ── PRIMARY PARTNER ─────────────────────────────────────────────── -->
-<section class="py-20 border-t border-white/5">
+<section class="py-20 border-t border-white/5" aria-labelledby="ecosystem-roles">
   <div class="max-w-screen-xl mx-auto px-6">
-    <div class="grid lg:grid-cols-2 gap-8 items-center">
-      <div>
-        <p class="text-[10px] font-black uppercase text-green-400 tracking-[0.35em] mb-4">PRIMARY REAL ESTATE PARTNER</p>
-        <h2 class="text-4xl font-black text-white tracking-tighter mb-4">Alliance Trust Realty LLC</h2>
-        <p class="text-slate-400 leading-relaxed mb-6">
-          Our primary real estate partnership providing comprehensive property services, investment opportunities, and asset management solutions. Alliance Trust Realty operates as the real estate backbone of GEM's integrated security and trust services model.
-        </p>
-        <ul class="space-y-3 mb-8">
-          {% for item in ["Real Estate Investment Advisory","Property Management & Oversight","Asset Recovery Coordination","Legal Trust Documentation","Compliance-First Transaction Handling"] %}
-          <li class="flex items-center gap-3 text-sm text-slate-300">
-            <div class="w-5 h-5 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center flex-shrink-0">
-              <i data-lucide="check" class="h-3 w-3 text-green-400"></i>
-            </div>
-            {{ item }}
-          </li>
-          {% endfor %}
-        </ul>
-        <div class="flex flex-wrap gap-2 mb-8">
-          <span class="text-[10px] font-black px-3 py-1.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/30">Verified Partner</span>
-          <span class="text-[10px] font-black px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30">Evidence Required</span>
-          <span class="text-[10px] font-black px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">CEO Approval Pending</span>
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <p class="text-[10px] font-black uppercase text-cyan-400 tracking-[0.35em] mb-4">PLATFORM ROLES</p>
+      <h2 id="ecosystem-roles" class="text-3xl lg:text-5xl font-black text-white tracking-tighter mb-5">One ecosystem, distinct responsibilities</h2>
+      <p class="text-slate-400 leading-relaxed">
+        Public exploration stays separate from eligibility review and protected client work. This reduces confusion and keeps account access on the canonical GEM platform.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      {% set roles = [
+        {
+          "icon": "compass",
+          "eyebrow": "DISCOVER",
+          "title": "Enterprise capability site",
+          "description": "Introduces services, operating principles, and engagement options for organizations evaluating GEM.",
+          "action": "Explore capabilities",
+          "href": url_for('services_page')
+        },
+        {
+          "icon": "badge-check",
+          "eyebrow": "QUALIFY",
+          "title": "Canonical GEM platform",
+          "description": "Handles eligibility, onboarding, verified documentation, and controlled account entry.",
+          "action": "Begin qualification",
+          "href": canonical_get_started_url
+        },
+        {
+          "icon": "network",
+          "eyebrow": "DELIVER",
+          "title": "Approved service network",
+          "description": "Specialists and providers are introduced only when relevant, verified, and covered by current engagement terms.",
+          "action": "Review trust information",
+          "href": canonical_trust_center_url
+        }
+      ] %}
+      {% for role in roles %}
+      <article class="bg-[#0a0f1e] border border-white/10 rounded-3xl p-8 flex flex-col">
+        <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-6">
+          <i data-lucide="{{ role.icon }}" class="h-5 w-5 text-cyan-400"></i>
         </div>
-        <a href="{{ url_for('contact_page') }}"
-           class="inline-flex items-center gap-2 h-12 px-7 rounded-2xl bg-green-500 hover:bg-green-400 text-[#030712] font-black text-sm uppercase tracking-wider transition-all">
-          <i data-lucide="handshake" class="h-4 w-4"></i> Partner With Us
+        <p class="text-[10px] font-black text-cyan-400 tracking-[0.25em] mb-3">{{ role.eyebrow }}</p>
+        <h3 class="text-xl font-black text-white mb-4">{{ role.title }}</h3>
+        <p class="text-sm text-slate-400 leading-relaxed flex-1 mb-7">{{ role.description }}</p>
+        <a href="{{ role.href }}" class="inline-flex items-center gap-2 text-sm font-black text-cyan-400 hover:text-white transition-colors">
+          {{ role.action }} <i data-lucide="arrow-right" class="h-4 w-4"></i>
         </a>
-      </div>
-      <div class="bg-[#0a0f1e] border border-green-500/20 rounded-3xl p-8 flex flex-col gap-6">
-        <div class="flex items-center gap-4">
-          <div class="w-16 h-16 rounded-2xl bg-green-500/10 border border-green-500/30 flex items-center justify-center">
-            <i data-lucide="building-2" class="h-8 w-8 text-green-400"></i>
-          </div>
-          <div>
-            <h3 class="text-white font-black text-lg">Alliance Trust Realty LLC</h3>
-            <p class="text-green-400 text-xs font-bold uppercase tracking-wide">Real Estate Trust Partner</p>
-          </div>
-        </div>
-        {% set atr_stats = [
-          {"label": "Partnership Status", "value": "Active Alliance"},
-          {"label": "Service Region",     "value": "National"},
-          {"label": "Integration",        "value": "Full GEM + ATR Integration"},
-          {"label": "Primary Contact",    "value": "via GEM Enterprise"},
-        ] %}
-        {% for s in atr_stats %}
-        <div class="flex justify-between items-center border-b border-white/5 pb-3">
-          <span class="text-slate-500 text-xs">{{ s.label }}</span>
-          <span class="text-white text-xs font-bold">{{ s.value }}</span>
-        </div>
-        {% endfor %}
-        <p class="text-slate-500 text-xs">Gregor Stewart — Owner / Principal Consultant — serves as the managing bridge between GEM cybersecurity operations and Alliance Trust Realty LLC.</p>
-      </div>
+      </article>
+      {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- ── TRUSTEE SERVICES ───────────────────────────────────────────── -->
-<section class="py-20 border-t border-white/5">
+<section class="py-20 border-t border-white/5" aria-labelledby="engagement-flow">
   <div class="max-w-screen-xl mx-auto px-6">
     <div class="flex items-center gap-4 mb-12">
       <div class="h-px flex-1 bg-gradient-to-r from-transparent to-blue-500/30"></div>
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
-          <i data-lucide="landmark" class="h-4 w-4 text-blue-400"></i>
-        </div>
-        <h2 class="text-lg font-black text-white uppercase tracking-[0.3em]">Trustee Services</h2>
-      </div>
+      <h2 id="engagement-flow" class="text-lg font-black text-white uppercase tracking-[0.3em]">Engagement flow</h2>
       <div class="h-px flex-1 bg-gradient-to-l from-transparent to-blue-500/30"></div>
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {% set services = [
-        {"icon": "gavel",         "name": "Legal Trustee Services",      "color": "blue",   "desc": "Professional trustee services for estate planning, asset protection, and legal compliance management."},
-        {"icon": "coins",         "name": "Financial Trust Management",  "color": "yellow", "desc": "Secure management of financial assets, investments, and trust fund administration."},
-        {"icon": "home",          "name": "Real Estate Trust Services",  "color": "green",  "desc": "Specialized real estate trust management for property holdings and investment portfolios."},
-        {"icon": "shield-check",  "name": "Asset Protection Trusts",    "color": "cyan",   "desc": "Advanced asset protection strategies and trust structures for wealth preservation."},
+      {% set steps = [
+        {"n": "01", "title": "Explore", "desc": "Review capabilities and decide whether the operating model fits your needs."},
+        {"n": "02", "title": "Apply", "desc": "Submit the controlled onboarding request on the canonical GEM platform."},
+        {"n": "03", "title": "Verify", "desc": "Confirm identity, scope, eligibility, documentation, and service boundaries."},
+        {"n": "04", "title": "Access", "desc": "Approved members enter through the canonical client login for protected work."}
       ] %}
-      {% for s in services %}
-      <div class="group bg-[#0a0f1e] border border-white/8 rounded-3xl p-6 hover:border-{{ s.color }}-500/40 transition-all flex flex-col gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-{{ s.color }}-500/10 border border-{{ s.color }}-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-          <i data-lucide="{{ s.icon }}" class="h-5 w-5 text-{{ s.color }}-400"></i>
-        </div>
-        <div>
-          <h3 class="text-white font-black text-sm">{{ s.name }}</h3>
-          <p class="text-slate-400 text-xs mt-2 leading-relaxed">{{ s.desc }}</p>
-        </div>
+      {% for step in steps %}
+      <div class="bg-[#0a0f1e] border border-white/10 rounded-3xl p-7">
+        <span class="text-4xl font-black text-white/10">{{ step.n }}</span>
+        <h3 class="text-white font-black text-lg mt-5 mb-3">{{ step.title }}</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">{{ step.desc }}</p>
       </div>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- ── TECHNOLOGY PARTNERS ────────────────────────────────────────── -->
-<section class="py-20 border-t border-white/5">
-  <div class="max-w-screen-xl mx-auto px-6">
-    <div class="flex items-center gap-4 mb-12">
-      <div class="h-px flex-1 bg-gradient-to-r from-transparent to-cyan-500/30"></div>
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-          <i data-lucide="cpu" class="h-4 w-4 text-cyan-400"></i>
-        </div>
-        <h2 class="text-lg font-black text-white uppercase tracking-[0.3em]">Technology Partners</h2>
-      </div>
-      <div class="h-px flex-1 bg-gradient-to-l from-transparent to-cyan-500/30"></div>
-    </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {% set tech_partners = [
-        {"name": "Amazon Web Services",    "type": "Cloud Infrastructure",          "logo": "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",   "desc": "Enterprise cloud infrastructure powering GEM's security monitoring and data operations.", "status": "Technology Partner"},
-        {"name": "Microsoft Azure",        "type": "Enterprise Cloud & Compliance", "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg",       "desc": "Enterprise cloud computing, AI services, and compliance frameworks.", "status": "Technology Partner"},
-        {"name": "Google Cloud Platform",  "type": "AI & Data Analytics",          "logo": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Google_Cloud_logo.svg",          "desc": "Advanced data analytics, AI/ML capabilities, and security services.", "status": "Technology Partner"},
-        {"name": "IBM Security",           "type": "Enterprise Security",           "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",                   "desc": "Enterprise-grade security consulting and threat intelligence infrastructure.", "status": "Technology Partner"},
-        {"name": "Cisco",                  "type": "Network Security",              "logo": "https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg",       "desc": "Network security, firewall infrastructure, and enterprise connectivity.", "status": "Technology Partner"},
-        {"name": "Deloitte Digital",       "type": "Strategic Trustee",             "logo": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Deloitte.svg",                  "desc": "Digital transformation advisory, risk management, and cybersecurity governance.", "status": "Strategic Trustee"},
-        {"name": "PwC Advisory",           "type": "Compliance Trustee",            "logo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/PwC_logo.svg",                  "desc": "Independent audit, compliance verification, and trust assurance services.", "status": "Compliance Trustee"},
-        {"name": "Oracle",                 "type": "Enterprise Data Platform",      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg",               "desc": "Enterprise data management, cloud applications, and cybersecurity tooling.", "status": "Technology Partner"},
-        {"name": "KPMG",                   "type": "Audit & Compliance",            "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9d/KPMG_logo.svg",                 "desc": "Audit, tax, and advisory services supporting GEM compliance frameworks.", "status": "Compliance Trustee"},
-      ] %}
-      {% for p in tech_partners %}
-      <div class="group bg-[#0a0f1e] border border-white/8 rounded-2xl p-6 hover:border-cyan-500/30 transition-all flex flex-col gap-4">
-        <div class="flex items-center gap-4">
-          <div class="w-14 h-10 flex items-center justify-start flex-shrink-0">
-            <img src="{{ p.logo }}" alt="{{ p.name }}"
-                 class="max-h-8 max-w-[90px] object-contain opacity-50 group-hover:opacity-80 grayscale group-hover:grayscale-0 transition-all"
-                 onerror="this.style.display='none'">
-          </div>
-          <div class="flex-1 min-w-0">
-            <h3 class="text-white font-black text-sm truncate">{{ p.name }}</h3>
-            <p class="text-cyan-400 text-[10px] font-bold uppercase tracking-wide">{{ p.type }}</p>
-          </div>
-        </div>
-        <p class="text-slate-400 text-xs leading-relaxed flex-1">{{ p.desc }}</p>
-        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full self-start
-          {% if 'Trustee' in p.status %}text-yellow-400 bg-yellow-500/10 border border-yellow-500/30
-          {% else %}text-cyan-400 bg-cyan-500/10 border border-cyan-500/30{% endif %}">
-          {{ p.status }}
-        </span>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<!-- ── PARTNER INTAKE CTA ─────────────────────────────────────────── -->
 <section class="py-24 border-t border-white/5">
   <div class="max-w-screen-xl mx-auto px-6">
-    <div class="bg-gradient-to-r from-blue-500/10 via-cyan-500/5 to-blue-500/10 border border-blue-500/20 rounded-3xl p-12 text-center">
-      <div class="w-16 h-16 rounded-3xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center mx-auto mb-6">
-        <i data-lucide="handshake" class="h-8 w-8 text-blue-400"></i>
-      </div>
-      <h2 class="text-3xl lg:text-4xl font-black text-white tracking-tighter mb-4">Partnership Opportunities</h2>
-      <p class="text-slate-400 max-w-2xl mx-auto mb-8 leading-relaxed">
-        We are always seeking qualified partners in cybersecurity, real estate, legal services, compliance, and related fields. Contact us to explore mutual opportunities and strategic alignment.
-      </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="{{ url_for('contact_page') }}"
-           class="inline-flex items-center gap-2 h-13 px-8 py-3.5 rounded-2xl bg-blue-500 hover:bg-blue-400 text-white font-black text-sm uppercase tracking-wider transition-all">
-          <i data-lucide="handshake" class="h-4 w-4"></i> Become a Partner
-        </a>
-        <a href="{{ url_for('services_page') }}"
-           class="inline-flex items-center gap-2 h-13 px-8 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-sm uppercase tracking-wider hover:bg-white/10 transition-all">
-          <i data-lucide="grid" class="h-4 w-4"></i> View Services
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Partnership Process -->
-<section class="py-20 border-t border-white/5">
-  <div class="max-w-screen-xl mx-auto px-6">
-    <div class="flex items-center gap-4 mb-12">
-      <div class="h-px flex-1 bg-gradient-to-r from-transparent to-white/10"></div>
-      <h2 class="text-lg font-black text-white uppercase tracking-[0.3em]">Partnership Process</h2>
-      <div class="h-px flex-1 bg-gradient-to-l from-transparent to-white/10"></div>
-    </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {% set steps = [
-        {"icon": "message-circle", "n": "01", "title": "Initial Consultation", "desc": "Discuss partnership opportunities and mutual objectives with our team."},
-        {"icon": "search",         "n": "02", "title": "Due Diligence",        "desc": "Comprehensive evaluation, compatibility assessment, and verification."},
-        {"icon": "file-text",      "n": "03", "title": "Agreement",            "desc": "Formal partnership documentation, legal agreements, and CEO approval."},
-        {"icon": "rocket",         "n": "04", "title": "Activation",           "desc": "Partnership launch, integration, and ongoing relationship management."},
-      ] %}
-      {% for s in steps %}
-      <div class="relative bg-[#0a0f1e] border border-white/8 rounded-3xl p-6 flex flex-col gap-4">
-        <div class="flex items-center justify-between">
-          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-            <i data-lucide="{{ s.icon }}" class="h-4 w-4 text-blue-400"></i>
-          </div>
-          <span class="text-4xl font-black text-white/5">{{ s.n }}</span>
+    <div class="bg-gradient-to-r from-blue-500/10 via-cyan-500/5 to-blue-500/10 border border-blue-500/20 rounded-3xl p-10 lg:p-14">
+      <div class="grid lg:grid-cols-[1fr_auto] gap-8 items-center">
+        <div>
+          <p class="text-[10px] font-black uppercase text-cyan-400 tracking-[0.3em] mb-4">EVIDENCE BEFORE ENDORSEMENT</p>
+          <h2 class="text-3xl lg:text-4xl font-black text-white tracking-tighter mb-4">Partner names are published only after verification</h2>
+          <p class="text-slate-400 max-w-3xl leading-relaxed">
+            Use of a vendor product or public technology does not by itself create a partnership. GEM discloses named relationships only when the relationship is current, authorized, and supported by evidence.
+          </p>
         </div>
-        <h3 class="text-white font-black text-sm">{{ s.title }}</h3>
-        <p class="text-slate-400 text-xs leading-relaxed">{{ s.desc }}</p>
+        <div class="flex flex-col sm:flex-row lg:flex-col gap-3">
+          <a href="{{ canonical_get_started_url }}" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-[#030712] font-black text-sm uppercase tracking-wider transition-all">
+            Start an application <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+          </a>
+          <a href="{{ canonical_client_login_url }}" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-sm uppercase tracking-wider hover:bg-white/10 transition-all">
+            Client login <i data-lucide="log-in" class="h-4 w-4"></i>
+          </a>
+        </div>
       </div>
-      {% endfor %}
     </div>
   </div>
 </section>
