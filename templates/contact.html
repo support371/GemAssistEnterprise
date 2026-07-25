@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Contact - GEM Cybersecurity 24/7 Emergency Response{% endblock %}
+{% block title %}Contact - GEM Cybersecurity Incident & Assessment Intake{% endblock %}
 
 {% block content %}
 <!-- Page: CONTACT PAGE (/contact) -->
@@ -11,12 +11,12 @@
         <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-gemRed/5 rounded-full blur-[150px]"></div>
     </div>
     <div class="container mx-auto max-w-screen-xl px-6 relative z-10 text-center">
-        <p class="text-sm font-black uppercase text-gemRed tracking-[0.4em] mb-4">🚨 24/7 EMERGENCY RESPONSE</p>
+        <p class="text-sm font-black uppercase text-gemRed tracking-[0.4em] mb-4">INCIDENT & ASSESSMENT INTAKE</p>
         <h1 class="text-5xl sm:text-6xl lg:text-8xl font-black text-white mb-8 leading-[0.9] tracking-tighter">
             Connect with Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-gemLightBlue to-blue-400">Security Team</span>
         </h1>
         <p class="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed font-medium">
-            Immediate assistance for security incidents or strategic consultation for enterprise protection.
+            Submit a security incident or request a strategic consultation. Response timing depends on your active agreement and the assessed urgency.
         </p>
     </div>
 </section>
@@ -29,10 +29,10 @@
             <div class="h-16 w-16 bg-gemRed rounded-2xl flex items-center justify-center text-white mb-8">
                 <i data-lucide="phone-call" class="h-8 w-8 animate-bounce"></i>
             </div>
-            <h3 class="text-2xl font-black text-white mb-4">Emergency Hotline</h3>
-            <p class="text-gray-400 mb-8 font-medium">Active breach? Call our rapid response team immediately. 2-minute response guaranteed.</p>
+            <h3 class="text-2xl font-black text-white mb-4">Incident Support</h3>
+            <p class="text-gray-400 mb-8 font-medium">Active breach? Call the intake team and provide your organization and agreement details.</p>
             <a href="tel:+14017022460" class="text-3xl font-black text-white hover:text-gemRed transition-colors block mb-2">(401) 702-2460</a>
-            <div class="text-[10px] font-black text-gemRed uppercase tracking-widest">Available 24/7/365</div>
+            <div class="text-[10px] font-black text-gemRed uppercase tracking-widest">Service levels vary by agreement</div>
         </div>
 
         <!-- Support Card -->
@@ -56,11 +56,11 @@
             <div class="h-16 w-16 bg-gemBlue/10 rounded-2xl flex items-center justify-center text-gemBlue mb-8">
                 <i data-lucide="map-pin" class="h-8 w-8"></i>
             </div>
-            <h3 class="text-2xl font-black text-white mb-4">Global Intelligence HQ</h3>
+            <h3 class="text-2xl font-black text-white mb-4">Enterprise Intake</h3>
             <div class="space-y-6">
                 <div>
                     <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Contact</p>
-                    <p class="text-gray-400 font-medium">Our central Security Operations Center managing global infrastructure defense.</p>
+                    <p class="text-gray-400 font-medium">A controlled entry point for security assessments, service scoping, and client onboarding.</p>
                 </div>
                 <div>
                     <button type="button" onclick="document.getElementById('assessmentForm').scrollIntoView({behavior: 'smooth'})" class="w-full h-14 rounded-2xl bg-gemLightBlue text-gemBlue text-sm font-black uppercase tracking-widest hover:bg-white transition-all shadow-xl shadow-gemLightBlue/20">
@@ -68,7 +68,7 @@
                     </button>
                 </div>
                 <div class="pt-6 border-t border-white/10">
-                    <p class="text-lg font-black text-white">Hartford, CT & <br>Distributed Global Nodes</p>
+                    <p class="text-lg font-black text-white">Hartford, Connecticut</p>
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
                 <p class="text-[10px] font-black uppercase text-gemBlue/40 tracking-[0.3em] mb-4">SCHEDULE ASSESSMENT</p>
                 <h2 class="text-4xl lg:text-7xl font-black text-gemBlue tracking-tighter mb-8">Get Your <br><span class="text-gemLightBlue">Security Audit</span></h2>
                 <p class="text-gray-500 text-lg mb-12 leading-relaxed font-medium">
-                    Our analysts will perform an initial review of your infrastructure and provide a detailed risk profile report within 48 hours.
+                    Submit your requirements for an eligibility and scope review. Any assessment deliverables and timelines will be confirmed in writing.
                 </p>
                 <div class="space-y-8">
                     <div class="flex gap-6">
@@ -133,7 +133,7 @@
                         <select name="service" class="w-full bg-white border border-gray-200 rounded-2xl h-14 px-6 focus:border-gemLightBlue outline-none font-bold text-gemBlue appearance-none" required>
                             <option value="" disabled selected>Select a division</option>
                             <optgroup label="Cybersecurity Division">
-                                <option value="threat-monitoring">24/7 Threat Monitoring</option>
+                                <option value="threat-monitoring">Threat Monitoring</option>
                                 <option value="incident-response">Incident Response</option>
                                 <option value="compliance">Compliance Management</option>
                             </optgroup>
@@ -161,7 +161,7 @@ document.getElementById('assessmentForm').addEventListener('submit', async (e) =
     e.preventDefault();
     const btn = e.target.querySelector('button');
     const originalText = btn.innerText;
-    btn.innerText = 'PROCESING...';
+    btn.innerText = 'PROCESSING...';
     btn.disabled = true;
 
     const formData = new FormData(e.target);
