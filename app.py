@@ -61,9 +61,11 @@ logging.basicConfig(level=logging.INFO)
 # Create the Flask app (single instance)
 app = Flask(__name__)
 _session_secret = os.environ.get("SESSION_SECRET")
+_vercel_env = os.environ.get("VERCEL_ENV")
 _is_production = (
-    os.environ.get("VERCEL_ENV") == "production"
-    or os.environ.get("FLASK_ENV") == "production"
+    _vercel_env == "production"
+    if _vercel_env
+    else os.environ.get("FLASK_ENV") == "production"
 )
 if _is_production and not _session_secret:
     raise RuntimeError("SESSION_SECRET must be configured in production")
