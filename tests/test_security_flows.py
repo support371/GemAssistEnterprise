@@ -1,4 +1,43 @@
+import os
+import subprocess
+import sys
+
 import app as app_module
+
+
+def test_vercel_preview_does_not_use_production_secret_policy():
+    environment = os.environ.copy()
+    environment.pop("SESSION_SECRET", None)
+    environment.update(VERCEL_ENV="preview", FLASK_ENV="production")
+
+    result = subprocess.run(
+        [sys.executable, "-c", "import app"],
+        cwd=os.path.dirname(app_module.__file__),
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+
+
+def test_vercel_production_requires_session_secret():
+    environment = os.environ.copy()
+    environment.pop("SESSION_SECRET", None)
+    environment.update(VERCEL_ENV="production", FLASK_ENV="production")
+
+    result = subprocess.run(
+        [sys.executable, "-c", "import app"],
+        cwd=os.path.dirname(app_module.__file__),
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode != 0
+    assert "SESSION_SECRET must be configured in production" in result.stderr
 
 
 def test_health_endpoint_exposes_only_liveness_metadata():
