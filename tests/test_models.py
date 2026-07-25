@@ -9,7 +9,12 @@ from models import User, Organization, OrgMembership, RBACRole, AuditEvent
 
 def test_user_creation(db):
     """Test user model creation"""
-    user = User(email='test@example.com', name='Test User')
+    user = User(
+        id='user-test',
+        email='test@example.com',
+        first_name='Test',
+        last_name='User',
+    )
     db.session.add(user)
     db.session.commit()
     assert user.id is not None
@@ -18,7 +23,7 @@ def test_user_creation(db):
 
 def test_organization_creation(db):
     """Test org model creation"""
-    user = User(email='owner@example.com', name='Owner')
+    user = User(id='user-owner', email='owner@example.com', first_name='Owner')
     db.session.add(user)
     db.session.commit()
     
@@ -31,7 +36,7 @@ def test_organization_creation(db):
 
 def test_rbac_membership(db):
     """Test RBAC membership assignment"""
-    user = User(email='member@example.com')
+    user = User(id='user-member', email='member@example.com')
     db.session.add(user)
     db.session.commit()
     
@@ -48,7 +53,7 @@ def test_rbac_membership(db):
 
 def test_audit_event_creation(db):
     """Test audit event logging"""
-    user = User(email='actor@example.com')
+    user = User(id='user-actor', email='actor@example.com')
     db.session.add(user)
     db.session.commit()
     
