@@ -60,7 +60,14 @@ logging.basicConfig(level=logging.INFO)
 
 # Create the Flask app (single instance)
 app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key-change-in-production")
+_session_secret = os.environ.get("SESSION_SECRET")
+_is_production = (
+    os.environ.get("VERCEL_ENV") == "production"
+    or os.environ.get("FLASK_ENV") == "production"
+)
+if _is_production and not _session_secret:
+    raise RuntimeError("SESSION_SECRET must be configured in production")
+app.secret_key = _session_secret or os.urandom(32)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # ─── Gzip Compression ─────────────────────────────────────────────────────────
@@ -204,6 +211,26 @@ telegram_bot_instance = None
 # Branding Settings
 SITE_NAME = os.environ.get('SITE_NAME', 'GEM Assist Enterprise')
 PRIMARY_COLOR = os.environ.get('PRIMARY_COLOR', '#0066cc')
+CANONICAL_SITE_URL = os.environ.get(
+    'CANONICAL_SITE_URL',
+    'https://www.gemcybersecurityassist.com',
+).rstrip('/')
+CANONICAL_CLIENT_LOGIN_URL = os.environ.get(
+    'CANONICAL_CLIENT_LOGIN_URL',
+    f'{CANONICAL_SITE_URL}/client-login',
+)
+CANONICAL_GET_STARTED_URL = os.environ.get(
+    'CANONICAL_GET_STARTED_URL',
+    f'{CANONICAL_SITE_URL}/get-started',
+)
+CANONICAL_TRUST_CENTER_URL = os.environ.get(
+    'CANONICAL_TRUST_CENTER_URL',
+    f'{CANONICAL_SITE_URL}/trust-center',
+)
+CONTACT_RECIPIENT_EMAIL = os.environ.get(
+    'CONTACT_RECIPIENT_EMAIL',
+    'info@gemcybersecurityassist.com',
+)
 
 
 def allowed_file(filename, file_type='any'):
@@ -291,6 +318,10 @@ def inject_site_settings():
         'site_name': SITE_NAME,
         'primary_color': PRIMARY_COLOR,
         'user': current_user,
+        'canonical_site_url': CANONICAL_SITE_URL,
+        'canonical_client_login_url': CANONICAL_CLIENT_LOGIN_URL,
+        'canonical_get_started_url': CANONICAL_GET_STARTED_URL,
+        'canonical_trust_center_url': CANONICAL_TRUST_CENTER_URL,
     }
 
 
@@ -298,27 +329,9 @@ def inject_site_settings():
 
 @app.route('/health')
 def health():
-    import platform
-    db_ok = False
-    if USE_DATABASE and db:
-        try:
-            db.session.execute(db.text('SELECT 1'))
-            db_ok = True
-        except Exception:
-            db_ok = False
     return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
+        'status': 'ok',
         'version': '2.1.0',
-        'environment': os.environ.get('FLASK_ENV', 'development'),
-        'python': platform.python_version(),
-        'services': {
-            'database': 'connected' if db_ok else ('not configured' if not USE_DATABASE else 'error'),
-            'cms': 'active' if CMS_AVAILABLE else 'not configured',
-            'ai': 'active' if AI_AVAILABLE else 'not configured',
-            'mail': 'configured' if os.environ.get('MAIL_USERNAME') else 'not configured',
-        },
-        'uptime': 'nominal',
     }), 200
 
 
@@ -369,8 +382,8 @@ def github_callback():
     if not user_info:
         flash('Failed to fetch user information from GitHub', 'error')
         return redirect(url_for('index'))
+    session.pop('github_oauth_state', None)
     session['github_user'] = user_info
-    session['github_token'] = access_token
     session.permanent = True
     flash(f"Welcome, {user_info.get('name', user_info.get('login'))}!", 'success')
     return redirect(url_for('index'))
@@ -438,6 +451,20 @@ def api_contact():
         if is_personal_email(email):
             return jsonify({"status": "error", "message": "Please use a valid business email address."}), 400
         logging.info(f"Contact form submission: {name} ({email}) from {company}")
+        admin_msg = Message(
+            subject=f"New GEM Enterprise inquiry: {company or name}",
+            recipients=[CONTACT_RECIPIENT_EMAIL],
+            reply_to=email,
+            body=f"Name: {name}\nEmail: {email}\nCompany: {company}\n\nMessage:\n{message}",
+        )
+        try:
+            mail.send(admin_msg)
+        except Exception as mail_err:
+            logging.error(f"Contact mail sending failed: {mail_err}")
+            return jsonify({
+                "status": "error",
+                "message": "We could not confirm delivery. Please email info@gemcybersecurityassist.com.",
+            }), 503
         return jsonify({"status": "success", "message": "Message received. Our team will contact you shortly."}), 200
     except Exception as e:
         logging.error(f"Contact API error: {e}")
@@ -464,20 +491,29 @@ def api_assessment():
         logging.info(f"Assessment booking: {name} ({email}) — {company}")
         admin_msg = Message(
             subject=f"New Security Assessment Request: {company}",
-            recipients=["info@gemcybersecurityassist.com"],
+            recipients=[CONTACT_RECIPIENT_EMAIL],
+            reply_to=email,
             body=f"Name: {name}\nEmail: {email}\nCompany: {company}\nPhone: {phone}\nService: {service}\n\nMessage:\n{message}"
         )
         user_msg = Message(
             subject="Security Assessment Request Received - GEM Cyber",
             recipients=[email],
-            body=f"Hello {name},\n\nThank you for requesting a security assessment. Our team has received your request and a security analyst will reach out within 2 hours.\n\nBest regards,\nGEM Cyber Security Team"
+            body=f"Hello {name},\n\nThank you for requesting a security assessment. Our team has received your request and will follow up after reviewing your eligibility and requirements.\n\nBest regards,\nGEM Cyber Security Team"
         )
         try:
             mail.send(admin_msg)
             mail.send(user_msg)
         except Exception as mail_err:
             logging.error(f"Mail sending failed: {mail_err}")
-        return jsonify({"status": "success", "message": "Assessment request submitted. A security analyst will reach out within 2 hours."}), 200
+            return jsonify({
+                "status": "error",
+                "message": "We could not confirm delivery. Please use the application page on gemcybersecurityassist.com.",
+                "application_url": CANONICAL_GET_STARTED_URL,
+            }), 503
+        return jsonify({
+            "status": "success",
+            "message": "Assessment request received. Our team will review your eligibility and requirements.",
+        }), 200
     except Exception as e:
         logging.error(f"Assessment API error: {e}")
         return jsonify({"status": "error", "message": "An error occurred. Please try again."}), 500
@@ -501,6 +537,10 @@ def api_newsletter():
             mail.send(msg)
         except Exception as mail_err:
             logging.error(f"Newsletter mail failed: {mail_err}")
+            return jsonify({
+                "status": "error",
+                "message": "We could not confirm your subscription. Please try again later.",
+            }), 503
         return jsonify({"status": "success", "message": "Successfully subscribed to GEM Intelligence reports."}), 200
     except Exception as e:
         logging.error(f"Newsletter API error: {e}")
@@ -606,12 +646,7 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    if REPLIT_AUTH_AVAILABLE and replit_auth:
-        try:
-            return replit_auth.require_login(lambda: render_template('index.html', user=replit_auth.current_user))()
-        except Exception:
-            pass
-    return render_template('index.html', user=None)
+    return redirect(CANONICAL_CLIENT_LOGIN_URL, code=302)
 
 
 @app.route('/bridge/alliance-trust')
@@ -631,7 +666,12 @@ def bridge_gem():
 @app.route('/client')
 @app.route('/client-portal')
 def client_portal():
-    return render_template('client.html')
+    return redirect(CANONICAL_CLIENT_LOGIN_URL, code=302)
+
+
+@app.route('/get-started')
+def get_started():
+    return redirect(CANONICAL_GET_STARTED_URL, code=302)
 
 
 @app.route('/about-us')
