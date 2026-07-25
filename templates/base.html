@@ -170,8 +170,8 @@
             <a href="{{ url_for('about_page') }}" class="text-[11px] font-black uppercase tracking-[0.3em] text-white/70 hover:text-gemLightBlue transition-all">About</a>
           </div>
           <div class="h-8 w-px bg-white/10"></div>
-          <a href="{{ url_for('contact_page') }}" class="inline-flex items-center justify-center h-14 px-10 rounded-[1.25rem] bg-gemLightBlue text-gemBlue text-xs font-black uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-2xl shadow-gemLightBlue/20 active:scale-95 group">
-            Security Audit
+          <a href="{{ canonical_client_login_url }}" class="inline-flex items-center justify-center h-14 px-10 rounded-[1.25rem] bg-gemLightBlue text-gemBlue text-xs font-black uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-2xl shadow-gemLightBlue/20 active:scale-95 group">
+            Client Login
             <i data-lucide="chevron-right" class="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform"></i>
           </a>
         </nav>
@@ -224,8 +224,11 @@
           <a href="{{ url_for('about_page') }}" class="mobile-nav-link text-2xl font-black uppercase tracking-[0.4em] text-white hover:text-gemLightBlue">About</a>
           <a href="{{ url_for('contact_page') }}" class="mobile-nav-link text-2xl font-black uppercase tracking-[0.4em] text-white hover:text-gemLightBlue">Contact</a>
           <div class="h-px w-20 bg-white/10"></div>
-          <a href="{{ url_for('contact_page') }}" class="mobile-nav-link inline-flex items-center justify-center h-16 px-10 w-full rounded-[1.5rem] bg-gemLightBlue text-white text-sm font-black uppercase tracking-widest shadow-2xl shadow-gemLightBlue/20">
-            Schedule Assessment
+          <a href="{{ canonical_get_started_url }}" class="mobile-nav-link inline-flex items-center justify-center h-16 px-10 w-full rounded-[1.5rem] bg-gemLightBlue text-white text-sm font-black uppercase tracking-widest shadow-2xl shadow-gemLightBlue/20">
+            Get Started
+          </a>
+          <a href="{{ canonical_client_login_url }}" class="mobile-nav-link text-sm font-black uppercase tracking-widest text-white/70 hover:text-gemLightBlue">
+            Existing Client Login
           </a>
         </nav>
       </div>
@@ -292,6 +295,10 @@
 
     <!-- Main Content -->
     <main class="main-content" style="overflow-x: hidden;">
+        <aside class="relative z-[90] mt-24 border-y border-gemLightBlue/20 bg-[#06142c]/95 px-6 py-3 text-center text-xs font-bold text-blue-100 backdrop-blur-xl" aria-label="Platform access notice">
+          This site introduces GEM Enterprise capabilities. Eligibility, enrollment, trust documentation, and account access are handled on
+          <a href="{{ canonical_site_url }}" class="font-black text-gemLightBlue underline underline-offset-4">gemcybersecurityassist.com</a>.
+        </aside>
         {% block content %}{% endblock %}
     </main>
 
@@ -301,14 +308,14 @@
         <div>
           <h3 class="text-3xl font-black mb-8 tracking-tighter">GEM <span class="text-gemLightBlue">CYBER</span></h3>
           <p class="text-lg text-gray-400 mb-8 leading-relaxed font-medium">
-            Enterprise Threat Detection & 24/7 SOC Monitoring. Protecting digital assets globally.
+            Enterprise security, compliance, and asset-protection coordination for eligible organizations.
           </p>
           <div class="space-y-4">
             <a href="tel:+14017022460" class="flex items-center gap-4 text-gray-400 hover:text-gemLightBlue transition-colors group">
               <div class="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-gemLightBlue/10 transition-colors">
                 <i data-lucide="phone" class="h-5 w-5"></i>
               </div>
-              <span class="font-bold">(860) 305‑4376</span>
+              <span class="font-bold">(401) 702-2460</span>
             </a>
             <a href="mailto:info@gemcybersecurityassist.com" class="flex items-center gap-4 text-gray-400 hover:text-gemLightBlue transition-colors group">
               <div class="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-gemLightBlue/10 transition-colors">
@@ -344,13 +351,13 @@
               <i class="fab fa-x-twitter" style="font-size:1.25rem;"></i>
             </a>
           </div>
-          <div class="p-8 rounded-[2rem] bg-white/5 border border-white/10 group hover:border-gemLightBlue/30 transition-all">
+          <a href="{{ canonical_trust_center_url }}" class="block p-8 rounded-[2rem] bg-white/5 border border-white/10 group hover:border-gemLightBlue/30 transition-all">
             <h5 class="font-black mb-2 flex items-center gap-2 text-white">
-              SOC 2 Type II
+              Trust & Compliance
               <i data-lucide="shield-check" class="text-gemGreen h-4 w-4"></i>
             </h5>
-            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Certified & Verified 2026</p>
-          </div>
+            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Review verified documentation</p>
+          </a>
         </div>
       </div>
       <div class="max-w-screen-xl mx-auto px-6 mt-24 pt-12 border-t border-white/5">
@@ -369,25 +376,24 @@
     <div id="liveChatButton" class="live-chat-button">
         <div class="chat-button-content">
             <i class="fas fa-comments"></i>
-            <span class="chat-text">Live Support</span>
-            <div class="status-indicator online"></div>
+            <span class="chat-text">Contact Support</span>
         </div>
         <div class="chat-tooltip">
             <div class="chat-agents">
                 <div class="agent-status">
                     <i class="fas fa-user-shield text-primary"></i>
-                    <span>Security Team: <strong class="text-success">Online</strong></span>
+                    <span>Security Team: <strong>Contact options</strong></span>
                 </div>
                 <div class="agent-status">
                     <i class="fas fa-user-tie text-info"></i>
-                    <span>Real Estate: <strong class="text-success">Online</strong></span>
+                    <span>Real Estate: <strong>Contact options</strong></span>
                 </div>
                 <div class="agent-status">
                     <i class="fas fa-user-cog text-warning"></i>
-                    <span>Technical Support: <strong class="text-success">Online</strong></span>
+                    <span>Technical Support: <strong>Contact options</strong></span>
                 </div>
             </div>
-            <small class="text-muted">Average response time: <strong>2 minutes</strong></small>
+            <small class="text-muted">Response timing depends on the request and active agreement.</small>
         </div>
     </div>
 
@@ -398,7 +404,7 @@
                 <div class="modal-header border-secondary">
                     <h5 class="modal-title">
                         <i class="fas fa-shield-alt text-primary me-2"></i>
-                        GEM Enterprise Live Support
+                        GEM Enterprise Support
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
