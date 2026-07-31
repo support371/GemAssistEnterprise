@@ -1,4 +1,5 @@
-const FIREBASE_SDK_VERSION = '11.10.0';
+const FIREBASE_SDK_VERSION = '12.16.0';
+const FIREBASE_CDN_BASE = `https://cdn.jsdelivr.net/npm/firebase@${FIREBASE_SDK_VERSION}`;
 const RECAPTCHA_ENTERPRISE_SITE_KEY = '6LfR-m0tAAAAAA_ZknpoCND2H_ojGXKts5twCl6b';
 const MODEL_NAME = 'gemini-2.5-flash';
 
@@ -35,6 +36,20 @@ function addMessage(container, role, text) {
   message.textContent = text;
   container.appendChild(message);
   container.scrollTop = container.scrollHeight;
+}
+
+function describeInitializationError(error) {
+  const detail = String(error?.message || error || '');
+  if (/app.?check|recaptcha|site key|unauthorized|403/i.test(detail)) {
+    return 'App Check could not verify this deployment domain.';
+  }
+  if (/api.*not enabled|billing|blaze|permission denied/i.test(detail)) {
+    return 'Firebase AI Logic is not enabled for this project.';
+  }
+  if (/content security policy|blocked|failed to fetch dynamically imported module/i.test(detail)) {
+    return 'Firebase SDK loading was blocked by the site security policy.';
+  }
+  return 'Assistant configuration could not be initialized.';
 }
 
 function mountWidget() {
@@ -84,15 +99,20 @@ function mountWidget() {
 }
 
 async function initializeFirebaseAI(config) {
-  const appModule = await import(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-app.js`);
-  const appCheckModule = await import(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-app-check.js`);
-  const aiModule = await import(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-ai.js`);
+  // jsDelivr is already permitted by the site's CSP. Loading Firebase from this
+  // pinned package endpoint avoids widening script-src to additional hosts.
+  const appModule = await import(`${FIREBASE_CDN_BASE}/firebase-app.js`);
+  const appCheckModule = await import(`${FIREBASE_CDN_BASE}/firebase-app-check.js`);
+  const aiModule = await import(`${FIREBASE_CDN_BASE}/firebase-ai.js`);
 
   const app = appModule.initializeApp(config);
-  appCheckModule.initializeAppCheck(app, {
+  const appCheck = appCheckModule.initializeAppCheck(app, {
     provider: new appCheckModule.ReCaptchaEnterpriseProvider(RECAPTCHA_ENTERPRISE_SITE_KEY),
     isTokenAutoRefreshEnabled: true
   });
+
+  // Verify attestation before declaring the assistant protected and ready.
+  await appCheckModule.getToken(appCheck, true);
 
   const ai = aiModule.getAI(app, { backend: new aiModule.GoogleAIBackend() });
   return aiModule.getGenerativeModel(ai, {
@@ -119,7 +139,7 @@ async function start() {
       ui.status.textContent = 'Protected by Firebase App Check';
     } catch (error) {
       console.error('GEM Sentinel initialization failed', error);
-      ui.status.textContent = 'Assistant configuration could not be initialized.';
+      ui.status.textContent = describeInitializationError(error);
     }
   } else {
     ui.status.textContent = 'Firebase Web App configuration is required before AI responses can start.';
