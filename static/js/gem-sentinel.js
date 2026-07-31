@@ -2,6 +2,15 @@ const FIREBASE_SDK_VERSION = '11.10.0';
 const RECAPTCHA_ENTERPRISE_SITE_KEY = '6LfR-m0tAAAAAA_ZknpoCND2H_ojGXKts5twCl6b';
 const MODEL_NAME = 'gemini-2.5-flash';
 
+const DEFAULT_FIREBASE_CONFIG = Object.freeze({
+  apiKey: 'AIzaSyDiZyFZenSm7PYsYf2WpHUVHCztlssxBXw',
+  authDomain: 'coffee-spark-ai-barista-f9880.firebaseapp.com',
+  projectId: 'coffee-spark-ai-barista-f9880',
+  storageBucket: 'coffee-spark-ai-barista-f9880.firebasestorage.app',
+  messagingSenderId: '460135922205',
+  appId: '1:460135922205:web:deec3f5c69753041a6a4f4'
+});
+
 const SYSTEM_INSTRUCTION = `You are GEM Sentinel Client Navigator, the official digital assistant for GEM Cybersecurity & Monitoring Assist. Help visitors understand cybersecurity monitoring, incident response, compliance, asset protection, client onboarding, and how to contact the company. Be accurate, concise, calm, and professional. Never claim that a case, account, payment, recovery, investigation, or security event has been verified unless the application supplies evidence. Do not request passwords, seed phrases, private keys, one-time codes, card details, or other secrets. For an active emergency, direct the visitor to the published emergency contact channels.`;
 
 function loadConfig() {
@@ -13,12 +22,7 @@ function loadConfig() {
     try { return JSON.parse(meta.content); } catch (_) {}
   }
 
-  try {
-    const stored = localStorage.getItem('gemSentinelFirebaseConfig');
-    if (stored) return JSON.parse(stored);
-  } catch (_) {}
-
-  return null;
+  return DEFAULT_FIREBASE_CONFIG;
 }
 
 function hasRequiredConfig(config) {
@@ -105,13 +109,12 @@ async function start() {
   addMessage(ui.messages, 'assistant', 'Hello. I’m GEM Sentinel, the client navigator for GEM Cybersecurity & Monitoring Assist. How may I help you?');
 
   const config = loadConfig();
-  let model = null;
   let chat = null;
 
   if (hasRequiredConfig(config)) {
     try {
       ui.status.textContent = 'Securing connection with App Check…';
-      model = await initializeFirebaseAI(config);
+      const model = await initializeFirebaseAI(config);
       chat = model.startChat({ history: [] });
       ui.status.textContent = 'Protected by Firebase App Check';
     } catch (error) {
