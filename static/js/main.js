@@ -475,10 +475,16 @@ document.addEventListener('DOMContentLoaded', function() {
             // Initialize Bootstrap modal
             const modal = new bootstrap.Modal(liveChatModal);
 
-            // Open chat modal when button is clicked
+            // Open the real Smartsupp conversation, with the existing modal as a resilient fallback.
             liveChatButton.addEventListener('click', function() {
-                modal.show();
-                console.log('Live chat initiated by user');
+                if (typeof window.smartsupp === 'function') {
+                    window.smartsupp('chat:show');
+                    window.smartsupp('chat:open');
+                    console.log('Smartsupp live chat initiated by user');
+                } else {
+                    modal.show();
+                    console.log('Smartsupp unavailable; support contact fallback opened');
+                }
             });
 
             // Animate the chat button periodically
